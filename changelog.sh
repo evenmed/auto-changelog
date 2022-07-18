@@ -8,7 +8,7 @@
 # 2. We only check the 100 most recent commits, so if more than 100 commits are
 #    made without updating the changelog, the surplus won't get added
 #
-# 3. Not yet updating package.json / version.py
+# 3. Not yet updating version in package.json / version.py
 
 
 ##################################################################################
