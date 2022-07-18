@@ -182,10 +182,10 @@ done
 echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
 
 # Push the changes into the repo
-# git config user.name "evenmed"
-# git config user.email "emilio@circular.co"
-# git add -A
-# git commit -m "Version $NEW_VERSION"
-# git push
+git config user.name "evenmed"
+git config user.email "emilio@circular.co"
+git add -A
+git commit -m "Version $NEW_VERSION"
+git push
 
 ################################### END STEP 3 ###################################
