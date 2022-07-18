@@ -6,16 +6,14 @@ EXCLUDED_EMOJIS_PATTERN="^(♻️|🚦|🎨|📦|🔖|🚧)"
 ############### STEP 1: Get the current version from the Changelog ###############
 ##################################################################################
 
-# Get the most recent 10 lines from the Changelog and put them in an array
-FIRST_10_CL_LINES_STRING=$(head -n 10 dChangelog.md)
-IFS=$'\n' read -rd '' -a FIRST_10_CL_LINES <<< "$FIRST_10_CL_LINES_STRING"
-
-# Find the latest version number
+# Regex to match "vX.X.X"
 VERSION_PATTERN="v([[:digit:]]+).([[:digit:]]+).([[:digit:]]+)"
 V_MAJOR=0
 V_MINOR=0
 V_PATCH=0
-for CL_LINE in "${FIRST_10_CL_LINES[@]}"
+
+# Loop over Changelog lines until we find a version number
+while IFS= read -r CL_LINE
 do
   if [[ $CL_LINE =~ $VERSION_PATTERN ]]
   then
@@ -24,7 +22,7 @@ do
     V_PATCH=${BASH_REMATCH[3]}
     break
   fi
-done
+done < dChangelog.md
 
 echo "CURRENT VERSION: $V_MAJOR.$V_MINOR.$V_PATCH"
 
@@ -144,7 +142,8 @@ git config user.email "emilio@circular.co"
 
 git add -A
 git commit -m "Version $NEW_VERSION"
-# git commit --amend -C HEAD --no-verify dChangelog.md
 git push
+
+# git commit --amend -C HEAD --no-verify dChangelog.md
 
 ################################### END STEP 4 ###################################
