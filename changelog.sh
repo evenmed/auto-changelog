@@ -48,9 +48,9 @@
 #
 #
 # Potential issues:
-# 1. If a commit msg contains another commit msg as a substring, eg:
-#    - An old commit with msg "✨ Created github action for Changelog"
-#    - A new commit with msg "✨ Created github action"
+# 1. If we repeat identical commit messages, eg:
+#    - An old commit with msg "🐞 Fixed bug"
+#    - A new commit with msg "🐞 Fixed bug"
 #    It will find the new one in the changelog and thus consider that it was
 #    added, skipping it and any prior commits
 # 
@@ -84,10 +84,15 @@ IFS=$'\n' read -rd '' -a COMMITS <<< "$COMMITS_STRING"
 # Loop over them to find all that should be added
 ALPHANUM_PUNCT_PATTERN="^[a-zA-Z0-9()?¿!¡*_-]"
 EXCLUDED_EMOJIS_PATTERN="^(♻️|🚦|🎨|📦|🔖|🚧)"
+CHANGELOG_CONTENT=$(cat dChangelog.md)
 for COMMIT in "${COMMITS[@]}"
 do
   # If we get to a commit already in the Changelog, stop the loop
-  if [[ "$(cat dChangelog.md)" == *"$COMMIT"* ]]
+  # To avoid matching commits which are substrings of others, we use a pattern to
+  # ensure that there's a newline after the commit in the Changelog
+  COMMIT_PATTERN="$COMMIT *
+"
+  if [[ "$CHANGELOG_CONTENT" =~ $COMMIT_PATTERN ]]
   then
     break
   fi
@@ -177,10 +182,10 @@ done
 echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
 
 # Push the changes into the repo
-git config user.name "evenmed"
-git config user.email "emilio@circular.co"
-git add -A
-git commit -m "Version $NEW_VERSION"
-git push
+# git config user.name "evenmed"
+# git config user.email "emilio@circular.co"
+# git add -A
+# git commit -m "Version $NEW_VERSION"
+# git push
 
 ################################### END STEP 3 ###################################
