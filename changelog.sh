@@ -116,7 +116,8 @@ else
   V_PATCH=$(($V_PATCH + 1))
 fi
 
-echo "NEW VERSION: $V_MAJOR.$V_MINOR.$V_PATCH"
+NEW_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
+echo "NEW VERSION: $NEW_VERSION"
 ################################### END STEP 3 ###################################
 
 
@@ -125,7 +126,7 @@ echo "NEW VERSION: $V_MAJOR.$V_MINOR.$V_PATCH"
 ##################################################################################
 
 # We start with the new version
-STRING_TO_ADD="**v$V_MAJOR.$V_MINOR.$V_PATCH $(date '+%Y-%m-%d %H:%M')**  \n"
+STRING_TO_ADD="**v$NEW_VERSION $(date '+%Y-%m-%d %H:%M')**  \n"
 
 # Then we add the breaking changes at the top...
 for COMMIT in "${BREAKING_CHANGES[@]}"
@@ -153,7 +154,7 @@ git config user.name "evenmed"
 git config user.email "emilio@circular.co"
 
 git add -A
-git commit -m "commit message $(date '+%Y-%m-%d %H:%M:%s')"
+git commit -m "Version $NEW_VERSION"
 # git commit --amend -C HEAD --no-verify dChangelog.md
 git push
 
