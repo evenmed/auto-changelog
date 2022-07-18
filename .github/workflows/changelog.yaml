@@ -8,6 +8,8 @@ jobs:
     name: "Update Changelog and version"
     runs-on: ubuntu-latest
     steps:
+      - name: List files
+        run: echo $(ls .)
       - name: Generate Auto Changelog
         run: bash changelog.sh
         # with:
