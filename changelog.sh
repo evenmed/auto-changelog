@@ -159,7 +159,7 @@ if [[ "$(cat package.json)" =~ $VERSION_PATTERN ]]
 then
   echo "Updating version in package.json"
   PACKAGE=$(cat package.json)
-  echo -e "${PACKAGE/${BASH_REMATCH[0]}/"version": "$NEW_VERSION"}" > package.json
+  echo -e "${PACKAGE/${BASH_REMATCH[0]}/\"version\": \"$NEW_VERSION\"}" > package.json
 fi
 
 # Push the changes into the repo
