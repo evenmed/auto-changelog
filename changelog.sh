@@ -1,17 +1,78 @@
+# Automatic Changelog Generator
+#
+# Version 1.0.0
+#
+# Description:
+# This script takes care of updating the Changelog.md file with the latest
+# commits whenever we push into main, and also updating the version both in the
+# Changelog and in package.json, in accordance with what's described in the
+# Changelog.README.md file.
+#
+# It consists of 4 steps:
+# 1. Get the current version from the Changelog. This is done by matching the
+#    Changelog contents to a "vX.X.X" regex pattern.
+#
+# 2. Get the commits to add to the changelog. This is done by `git log`ing the 100
+#    most recent commits' messages and then checking each one to see if:
+#
+#    a. They are already in the changelog, in which case we assume all prior
+#       commits are too and stop the loop
+#    b. If they start with an emoji that isn't any of the excluded ones
+#    
+#    If a. is false and b. is true, we push that commit into the list of commits
+#    to be added into the changelog.
+#
+#    IMPORTANT: In order for the `git log` to work, the checkout step in the action
+#    YAML file must have a "fetch-depth: 0". Otherwise the log will only return the
+#    single most recent commit.
+#
+# 3. Calculate the new version number based on commits' emojis. We split the list
+#    of commits to add into 3:
+#
+#    - *Breaking Changes* are all commits that start with a "🚨"
+#    - *Features* are all commits that start with a "✨"
+#    - *Patches* are all other commits
+#
+#    If there are any Breaking Changes, we do a MAJOR version bump. If there aren't
+#    any Breaking Changes but there are any Features, we do a MINOR bump. If they're
+#    all patches, we do a PATCH version bump.
+#
+# 4. Update the Changelog! We generate a string to be added at the top of the
+#    changelog in the following format:
+#    
+#    **vX.X.X YYYY-MM-DD HH:MM**
+#    ...All breaking changes
+#    ...All new features
+#    ...All patches
+#
+#    Once that's done, we add it into the top of the Changelog file. Additionally,
+#    we also update the version in package.json during this step
+#
+#
 # Potential issues:
 # 1. If a commit msg contains another commit msg as a substring, eg:
 #    - An old commit with msg "✨ Created github action for Changelog"
 #    - A new commit with msg "✨ Created github action"
 #    It will find the new one in the changelog and thus consider that it was
 #    added, skipping it and any prior commits
+#
+# 2. If a commit message in the Changelog contains a string in the form "vX.X.X",
+#    the script might interpret that as the current version
 # 
-# 2. We only check the 100 most recent commits, so if more than 100 commits are
+# 3. We only check the 100 most recent commits, so if more than 100 commits are
 #    made without updating the changelog, the surplus won't get added
 #
-# 3. This is only triggered when pushing to main, meaning dev won't get the
+# 4. This is only triggered when pushing to main, meaning dev won't get the
 #    changelog updates unless we downmerge / rebase. This also means that if we
-#    manually commit any changes into the changelog in dev, we'll inevitably have
-#    a conflict when merging into main
+#    manually commit any changes into the changelog in dev, we'll likely have a
+#    conflict when merging into main
+#
+# 5. Since this script is triggered by a push into main and it also pushes into
+#    main itself, there's the danger of creating an infinite action loop. Per
+#    initial tests, it seems that the push from this action doesn't trigger the
+#    action, probably thanks to a safeguard from Github for this exact scenario.
+#    Additionally, if it did get triggered a 2nd time, it shouldn't find any new
+#    commits to add into the Changelog and thus not get triggered a third time.
 
 
 ##################################################################################
@@ -68,6 +129,7 @@ do
      ! [[ "$COMMIT" =~ $EXCLUDED_EMOJIS_PATTERN ]]
   then
     # If it does, add it to the list
+    echo "Adding: $COMMIT"
     COMMITS_TO_ADD+=("$COMMIT")
   fi
 done
@@ -78,10 +140,6 @@ then
   exit 0
 fi
 
-for COMMIT in "${COMMITS_TO_ADD[@]}"
-do
-  echo "Adding: $COMMIT"
-done
 ################################### END STEP 2 ###################################
 
 
@@ -153,12 +211,13 @@ done
 # Finally, add it all into the changelog!
 echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
 
-## Update version in package.json too
+# Update version in package.json too
 VERSION_PATTERN='"version": "[[:digit:]]+.[[:digit:]]+.[[:digit:]]+"'
 if [[ "$(cat package.json)" =~ $VERSION_PATTERN ]]
 then
   echo "Updating version in package.json"
   PACKAGE=$(cat package.json)
+  # Replace the pattern match with `"version": "$NEW_VERSION"`
   echo -e "${PACKAGE/${BASH_REMATCH[0]}/\"version\": \"$NEW_VERSION\"}" > package.json
 fi
 
