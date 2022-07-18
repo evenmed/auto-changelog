@@ -17,5 +17,3 @@ jobs:
           chmod +x ./changelog.sh
           ./changelog.sh
         shell: bash
-        # with:
-        #   github_token: ${{ secrets.GITHUB_TOKEN }}
