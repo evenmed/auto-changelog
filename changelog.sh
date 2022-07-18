@@ -3,22 +3,12 @@ ALPHANUM_PUNCT_PATTERN="^[a-zA-Z0-9()?¿!¡*_-]"
 EXCLUDED_EMOJIS_PATTERN="^(♻️|🚦|🎨|📦|🔖|🚧)"
 
 ##################################################################################
-### STEP 1: Get the current version and latest commit message in the Changelog ###
+############### STEP 1: Get the current version from the Changelog ###############
 ##################################################################################
 
 # Get the most recent 10 lines from the Changelog and put them in an array
 FIRST_10_CL_LINES_STRING=$(head -n 10 dChangelog.md)
 IFS=$'\n' read -rd '' -a FIRST_10_CL_LINES <<< "$FIRST_10_CL_LINES_STRING"
-
-# Find the first one that starts with an emoji
-for CL_LINE in "${FIRST_10_CL_LINES[@]}"
-do
-  if ! [[ $CL_LINE =~ $ALPHANUM_PUNCT_PATTERN ]]
-  then
-    LATEST_CL_COMMIT=$CL_LINE
-    break
-  fi
-done
 
 # Find the latest version number
 VERSION_PATTERN="v([[:digit:]]+).([[:digit:]]+).([[:digit:]]+)"
@@ -36,7 +26,6 @@ do
   fi
 done
 
-echo "LATEST_CL_COMMIT: $LATEST_CL_COMMIT"
 echo "CURRENT VERSION: $V_MAJOR.$V_MINOR.$V_PATCH"
 
 ################################### END STEP 1 ###################################
@@ -56,7 +45,7 @@ IFS=$'\n' read -rd '' -a COMMITS <<< "$COMMITS_STRING"
 # Loop over them to find all that should be added
 for COMMIT in "${COMMITS[@]}"
 do
-  # If we get to the latest one from the cl, stop the loop
+  # If we get to a commit already in the Changelog, stop the loop
   if [[ "$(cat dChangelog.md)" == *"$COMMIT"* ]]
   then
     break
