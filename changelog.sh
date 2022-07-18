@@ -56,6 +56,7 @@ IFS=$'\n' read -rd '' -a COMMITS <<< "$COMMITS_STRING"
 # Loop over them to find all that should be added
 for COMMIT in "${COMMITS[@]}"
 do
+  echo "Checking $COMMIT"
   # If we get to the latest one from the cl, stop the loop
   if [[ $LATEST_CL_COMMIT == "$COMMIT"* ]]
   then
