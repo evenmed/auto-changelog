@@ -149,6 +149,6 @@ done
 echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
 
 # Add the changelog update in the most recent commit
-git commit --amend -C HEAD --no-verify Changelog.md
+git commit --amend -C HEAD --no-verify dChangelog.md
 
 ################################### END STEP 4 ###################################
