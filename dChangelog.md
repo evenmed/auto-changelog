@@ -1,3 +1,6 @@
+**v1.1.1 2022-07-18 04:48**  
+😩 PAtch me daddy  
+
 **v1.1.0 2022-07-18 04:33**  
 ✨ New changelog file  
 🏗 Fixed changelog action  
