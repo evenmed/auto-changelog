@@ -152,9 +152,9 @@ echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
 git config user.name "evenmed"
 git config user.email "emilio@circular.co"
 
-# git add -A
-# git commit -m "commit message"
-git commit --amend -C HEAD --no-verify dChangelog.md
+git add -A
+git commit -m "commit message $(date '+%Y-%m-%d %H:%M:%s')"
+# git commit --amend -C HEAD --no-verify dChangelog.md
 git push
 
 ################################### END STEP 4 ###################################
