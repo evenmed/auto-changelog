@@ -1,3 +1,6 @@
+**v2.1.1 2022-07-18 21:21**  
+🏗 Avoid reading changelog twice  
+
 **v2.1.0 2022-07-18 21:20**  
 ✨ Deleted outdated  
 🏗 Added back git commands  
