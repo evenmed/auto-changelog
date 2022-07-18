@@ -5,14 +5,14 @@ on:
       - main
 jobs:
   update-changelog:
-    name: "Update Changelog and version"
+    name: Update Changelog and version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
-      - name: Generate Auto Changelog
+      - name: Update Changelog and version
         run: |
           chmod +x ./changelog.sh
           ./changelog.sh
