@@ -1,3 +1,6 @@
+**v1.2.0 2022-07-18 20:46**  
+✨ Deleted outdated issue  
+
 **v1.1.2 2022-07-18 15:45**  
 🐞 Use npm entirely  
 
