@@ -9,10 +9,8 @@
 # Changelog.README.md file.
 #
 # It consists of 4 steps:
-# 1. Get the current version from the Changelog. This is done by matching the
-#    Changelog contents to a "vX.X.X" regex pattern.
 #
-# 2. Get the commits to add to the changelog. This is done by `git log`ing the 100
+# 1. Get the commits to add to the changelog. This is done by `git log`ing the 100
 #    most recent commits' messages and then checking each one to see if:
 #
 #    a. They are already in the changelog, in which case we assume all prior
@@ -26,7 +24,7 @@
 #    YAML file must have a "fetch-depth: 0". Otherwise the log will only return the
 #    single most recent commit.
 #
-# 3. Calculate the new version number based on commits' emojis. We split the list
+# 2. Calculate the new version number based on commits' emojis. We split the list
 #    of commits to add into 3:
 #
 #    - *Breaking Changes* are all commits that start with a "🚨"
@@ -37,7 +35,7 @@
 #    any Breaking Changes but there are any Features, we do a MINOR bump. If they're
 #    all patches, we do a PATCH version bump.
 #
-# 4. Update the Changelog! We generate a string to be added at the top of the
+# 3. Update the Changelog! We generate a string to be added at the top of the
 #    changelog in the following format:
 #    
 #    **vX.X.X YYYY-MM-DD HH:MM**
@@ -76,34 +74,7 @@
 
 
 ##################################################################################
-############### STEP 1: Get the current version from the Changelog ###############
-##################################################################################
-
-# Regex to match "vX.X.X"
-VERSION_PATTERN="v([[:digit:]]+).([[:digit:]]+).([[:digit:]]+)"
-V_MAJOR=0
-V_MINOR=0
-V_PATCH=0
-
-# Loop over Changelog lines until we find a version number
-while IFS= read -r CL_LINE
-do
-  if [[ $CL_LINE =~ $VERSION_PATTERN ]]
-  then
-    V_MAJOR=${BASH_REMATCH[1]}
-    V_MINOR=${BASH_REMATCH[2]}
-    V_PATCH=${BASH_REMATCH[3]}
-    break
-  fi
-done < dChangelog.md
-
-echo "CURRENT VERSION: $V_MAJOR.$V_MINOR.$V_PATCH"
-
-################################### END STEP 1 ###################################
-
-
-##################################################################################
-################ STEP 2: Get the commits to add to the changelog #################
+################ STEP 1: Get the commits to add to the changelog #################
 ##################################################################################
 
 # Create an empty array where we'll store the commits to be added
@@ -140,11 +111,11 @@ then
   exit 0
 fi
 
-################################### END STEP 2 ###################################
+################################### END STEP 1 ###################################
 
 
 ##################################################################################
-######## STEP 3: Calculate the new version number based on commits' emojis #######
+######## STEP 2: Calculate the new version number based on commits' emojis #######
 ##################################################################################
 
 # Split commits into breaking changes, features, and patches
@@ -165,40 +136,27 @@ do
 done
 
 # Increment the version accordingly
-BUMP="patch"
 if [[ ${#BREAKING_CHANGES[@]} > 0 ]]
 then
-  BUMP="major"
-  V_MAJOR=$(($V_MAJOR + 1))
-  V_MINOR=0
-  V_PATCH=0
+  NEW_VERSION=$(npm --no-git-tag-version version major)
 elif [[ ${#FEATURES[@]} > 0 ]]
 then
-  BUMP="minor"
-  V_MINOR=$(($V_MINOR + 1))
-  V_PATCH=0
+  NEW_VERSION=$(npm --no-git-tag-version version minor)
 else
-  V_PATCH=$(($V_PATCH + 1))
+  NEW_VERSION=$(npm --no-git-tag-version version patch)
 fi
 
-NEW_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
 echo "NEW VERSION: $NEW_VERSION"
-################################### END STEP 3 ###################################
+
+################################### END STEP 2 ###################################
 
 
 ##################################################################################
-########################## STEP 4: Update the Changelog! #########################
+########################## STEP 3: Update the Changelog! #########################
 ##################################################################################
 
-if [ -f "package.json" ]
-then
-  echo "Package.json found, using npm-version to bump the version"
-  V_STRING=$(npm --no-git-tag-version version $BUMP)
-  echo "Vstring $V_STRING"
-fi
-
-# We start with the new version
-STRING_TO_ADD="**v$NEW_VERSION $(date '+%Y-%m-%d %H:%M')**  \n"
+# We start with the new version and date
+STRING_TO_ADD="**$NEW_VERSION $(date '+%Y-%m-%d %H:%M')**  \n"
 
 # Then we add the breaking changes at the top...
 for COMMIT in "${BREAKING_CHANGES[@]}"
@@ -221,16 +179,6 @@ done
 # Finally, add it all into the changelog!
 echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
 
-# Update version in package.json too
-# VERSION_PATTERN='"version": "[[:digit:]]+.[[:digit:]]+.[[:digit:]]+"'
-# if [[ "$(cat package.json)" =~ $VERSION_PATTERN ]]
-# then
-#   echo "Updating version in package.json"
-#   PACKAGE=$(cat package.json)
-#   # Replace the pattern match with `"version": "$NEW_VERSION"`
-#   echo -e "${PACKAGE/${BASH_REMATCH[0]}/\"version\": \"$NEW_VERSION\"}" > package.json
-# fi
-
 # Push the changes into the repo
 git config user.name "evenmed"
 git config user.email "emilio@circular.co"
@@ -240,4 +188,4 @@ git push
 
 # git commit --amend -C HEAD --no-verify dChangelog.md
 
-################################### END STEP 4 ###################################
+################################### END STEP 3 ###################################
