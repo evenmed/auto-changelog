@@ -53,19 +53,16 @@
 #    - A new commit with msg "✨ Created github action"
 #    It will find the new one in the changelog and thus consider that it was
 #    added, skipping it and any prior commits
-#
-# 2. If a commit message in the Changelog contains a string in the form "vX.X.X",
-#    the script might interpret that as the current version
 # 
-# 3. We only check the 100 most recent commits, so if more than 100 commits are
+# 2. We only check the 100 most recent commits, so if more than 100 commits are
 #    made without updating the changelog, the surplus won't get added
 #
-# 4. This is only triggered when pushing to main, meaning dev won't get the
+# 3. This is only triggered when pushing to main, meaning dev won't get the
 #    changelog updates unless we downmerge / rebase. This also means that if we
 #    manually commit any changes into the changelog in dev, we'll likely have a
 #    conflict when merging into main
 #
-# 5. Since this script is triggered by a push into main and it also pushes into
+# 4. Since this script is triggered by a push into main and it also pushes into
 #    main itself, there's the danger of creating an infinite action loop. Per
 #    initial tests, it seems that the push from this action doesn't trigger the
 #    action, probably thanks to a safeguard from Github for this exact scenario.
@@ -185,7 +182,5 @@ git config user.email "emilio@circular.co"
 git add -A
 git commit -m "Version $NEW_VERSION"
 git push
-
-# git commit --amend -C HEAD --no-verify dChangelog.md
 
 ################################### END STEP 3 ###################################
