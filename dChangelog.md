@@ -1,26 +1,3 @@
-**v3.0.0 2022-07-18 15:50**  
-🚨 Major test  
-🚨 A breaking change  
-🚨 Bunch of comments, done for real now  
-🚨 Fixed package.json  
-🚨 Added known issues  
-🚨 ALL DONE!!  
-🚨 Added new action!  
-✨ Deleted outdated issue  
-✨ vstring  
-✨ All done :)))  
-✨ Now we update package.json too  
-✨ version ✨  
-✨ Feat: nice  
-✨ New changelog file  
-🐞 Use npm entirely  
-🐞 Fixed npm version usage  
-🐞 Fix: escape the double quotes  
-🤞 Added more potential issues  
-🐞 Fix: patch  
-😩 PAtch me daddy  
-🏗 Fixed changelog action  
-
 **v2.0.0 2022-07-18 20:47**  
 🚨 Major test  
 
