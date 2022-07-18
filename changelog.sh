@@ -24,8 +24,8 @@
 #    YAML file must have a "fetch-depth: 0". Otherwise the log will only return the
 #    single most recent commit.
 #
-# 2. Calculate the new version number based on commits' emojis. We split the list
-#    of commits to add into 3:
+# 2. Update the version number based on commits' emojis. We split the list of
+#    commits to add into 3:
 #
 #    - *Breaking Changes* are all commits that start with a "🚨"
 #    - *Features* are all commits that start with a "✨"
@@ -87,7 +87,7 @@ EXCLUDED_EMOJIS_PATTERN="^(♻️|🚦|🎨|📦|🔖|🚧)"
 for COMMIT in "${COMMITS[@]}"
 do
   # If we get to a commit already in the Changelog, stop the loop
-  if [[ "$(cat dChangelog.md)" == *"$COMMIT"* ]]
+  if [[ "$(cat dChangelog.md)" == *"\n$COMMIT"* ]]
   then
     break
   fi
@@ -181,6 +181,6 @@ git config user.name "evenmed"
 git config user.email "emilio@circular.co"
 git add -A
 git commit -m "Version $NEW_VERSION"
-git push
+# git push
 
 ################################### END STEP 3 ###################################
