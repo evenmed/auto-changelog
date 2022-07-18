@@ -1,5 +1,5 @@
 # Potential issues:
-# 1. If a commit contains another commit, eg:
+# 1. If a commit msg contains another commit msg as a substring, eg:
 #    - An old commit with msg "✨ Created github action for Changelog"
 #    - A new commit with msg "✨ Created github action"
 #    It will find the new one in the changelog and thus consider that it was
@@ -8,7 +8,10 @@
 # 2. We only check the 100 most recent commits, so if more than 100 commits are
 #    made without updating the changelog, the surplus won't get added
 #
-# 3. Not yet updating version in package.json / version.py
+# 3. This is only triggered when pushing to main, meaning dev won't get the
+#    changelog updates unless we downmerge / rebase. This also means that if we
+#    manually commit any changes into the changelog in dev, we'll inevitably have
+#    a conflict when merging into main
 
 
 ##################################################################################
@@ -150,10 +153,19 @@ done
 # Finally, add it all into the changelog!
 echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
 
+## Update version in package.json too
+VERSION_PATTERN='"version": "[[:digit:]]+.[[:digit:]]+.[[:digit:]]+"'
+if [[ "$(cat package.json)" =~ $VERSION_PATTERN ]]
+then
+  echo "Updating version in package.json"
+  PACKAGE=$(cat package.json)
+  echo -e "${PACKAGE/${BASH_REMATCH[0]}/"version": "$NEW_VERSION"}" > package.json
+fi
+
 # Push the changes into the repo
 git config user.name "evenmed"
 git config user.email "emilio@circular.co"
-git add dChangelog.md
+git add -A
 git commit -m "Version $NEW_VERSION"
 git push
 
