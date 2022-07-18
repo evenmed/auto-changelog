@@ -8,6 +8,7 @@ jobs:
     name: "Update Changelog and version"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: List files
         run: echo "LS $(ls .)"
       - name: Generate Auto Changelog
