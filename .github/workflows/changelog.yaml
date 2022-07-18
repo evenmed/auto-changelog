@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: List files
-        run: echo $(ls .)
+        run: echo "LS $(ls .)"
       - name: Generate Auto Changelog
-        run: bash changelog.sh
+        run: ./changelog.sh
+        shell: bash
         # with:
         #   github_token: ${{ secrets.GITHUB_TOKEN }}
