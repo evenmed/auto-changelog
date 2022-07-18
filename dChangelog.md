@@ -1,3 +1,6 @@
+**v1.1.2 2022-07-18 15:45**  
+🐞 Use npm entirely  
+
 **v6.1.1 2022-07-18 13:28**  
 🐞 Fixed npm version usage  
 
