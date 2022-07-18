@@ -1,3 +1,8 @@
+**v2.1.0 2022-07-18 21:20**  
+✨ Deleted outdated  
+🏗 Added back git commands  
+🐞 Fixed potential issue for commit substring matching  
+
 **v2.0.0 2022-07-18 20:47**  
 🚨 Major test  
 
