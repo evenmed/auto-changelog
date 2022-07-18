@@ -171,6 +171,7 @@ then
   then
     echo "Package.json found, using npm-version to bump the version"
     V_STRING=$(npm --no-git-tag-version version major)
+    echo "Vstring $V_STRING"
   fi
   # else
     V_MAJOR=$(($V_MAJOR + 1))
