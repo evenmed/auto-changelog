@@ -154,7 +154,7 @@ git config user.email "emilio@circular.co"
 
 # git add -A
 # git commit -m "commit message"
-# git push
 git commit --amend -C HEAD --no-verify dChangelog.md
+git push
 
 ################################### END STEP 4 ###################################
