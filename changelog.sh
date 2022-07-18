@@ -167,9 +167,14 @@ done
 # Increment the version accordingly
 if [[ ${#BREAKING_CHANGES[@]} > 0 ]]
 then
-  V_MAJOR=$(($V_MAJOR + 1))
-  V_MINOR=0
-  V_PATCH=0
+  if [ -f "package.json" ]
+  then
+    V_STRING=$(npm --no-git-tag-version version major)
+  fi
+  # else
+    V_MAJOR=$(($V_MAJOR + 1))
+    V_MINOR=0
+    V_PATCH=0
 elif [[ ${#FEATURES[@]} > 0 ]]
 then
   V_MINOR=$(($V_MINOR + 1))
