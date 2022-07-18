@@ -1,6 +1,10 @@
+# Known issues:
+# 1. If a commit contains another commit, eg:
+#    - An old commit with msg "✨ Created github action for Changelog"
+#    - A new commit with msg "✨ Created github action"
+#    It will find the new one in the changelog and thus consider that it was
+#    added, skipping it and any prior commits
 
-ALPHANUM_PUNCT_PATTERN="^[a-zA-Z0-9()?¿!¡*_-]"
-EXCLUDED_EMOJIS_PATTERN="^(♻️|🚦|🎨|📦|🔖|🚧)"
 
 ##################################################################################
 ############### STEP 1: Get the current version from the Changelog ###############
@@ -41,6 +45,8 @@ COMMITS_STRING=$(git --no-pager log -100 HEAD --format="%s")
 IFS=$'\n' read -rd '' -a COMMITS <<< "$COMMITS_STRING"
 
 # Loop over them to find all that should be added
+ALPHANUM_PUNCT_PATTERN="^[a-zA-Z0-9()?¿!¡*_-]"
+EXCLUDED_EMOJIS_PATTERN="^(♻️|🚦|🎨|📦|🔖|🚧)"
 for COMMIT in "${COMMITS[@]}"
 do
   # If we get to a commit already in the Changelog, stop the loop
