@@ -52,20 +52,13 @@ COMMITS_TO_ADD=()
 # Get the 100 most recent commit messages and put them in an array
 COMMITS_STRING=$(git --no-pager log -100 HEAD --format="%s")
 IFS=$'\n' read -rd '' -a COMMITS <<< "$COMMITS_STRING"
-echo "COMMITS_STRING $COMMITS_STRING"
-echo "COMMITS $COMMITS"
+
 # Loop over them to find all that should be added
-for COMMIT in "${COMMITS_STRING[@]}"
-do
-  echo "NANI? $COMMIT"
-done
 for COMMIT in "${COMMITS[@]}"
 do
-  echo "Checking $COMMIT"
   # If we get to the latest one from the cl, stop the loop
   if [[ $LATEST_CL_COMMIT == "$COMMIT"* ]]
   then
-    echo "Got to latest"
     break
   fi
 
@@ -74,10 +67,8 @@ do
      ! [[ "$COMMIT" =~ $EXCLUDED_EMOJIS_PATTERN ]]
   then
     # If it does, add it to the list
-    echo "Adding"
     COMMITS_TO_ADD+=("$COMMIT")
   fi
-  echo "Fi"
 done
 
 if ! [[ ${#COMMITS_TO_ADD[@]} > 0 ]]
@@ -158,6 +149,12 @@ done
 echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
 
 # Add the changelog update in the most recent commit
+git config user.name "evenmed"
+git config user.email "emilio@circular.co"
+
+# git add -A
+# git commit -m "commit message"
+# git push
 git commit --amend -C HEAD --no-verify dChangelog.md
 
 ################################### END STEP 4 ###################################
