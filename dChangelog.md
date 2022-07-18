@@ -1,3 +1,6 @@
+**v2.0.0 2022-07-18 20:47**  
+🚨 Major test  
+
 **v1.2.0 2022-07-18 20:46**  
 ✨ Deleted outdated issue  
 
