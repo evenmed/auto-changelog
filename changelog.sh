@@ -96,9 +96,12 @@ done
 if [[ ${#BREAKING_CHANGES[@]} > 0 ]]
 then
   V_MAJOR=$(($V_MAJOR + 1))
+  V_MINOR=0
+  V_PATCH=0
 elif [[ ${#FEATURES[@]} > 0 ]]
 then
   V_MINOR=$(($V_MINOR + 1))
+  V_PATCH=0
 else
   V_PATCH=$(($V_PATCH + 1))
 fi
