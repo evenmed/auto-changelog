@@ -1,3 +1,6 @@
+**v3.2.1 2022-07-18 05:42**  
+🐞 Fix: escape the double quotes  
+
 **v3.2.0 2022-07-18 05:41**  
 ✨ Now we update package.json too  
 
