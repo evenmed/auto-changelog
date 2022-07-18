@@ -1,6 +1,8 @@
+**v1.1.0 2022-07-18 04:33**  
+✨ New changelog file  
+🏗 Fixed changelog action  
+
 **v1.0.0 2022-07-18 04:29**  
 🚨 Added new action!  
 ✨ New changelog file  
 🏗 Fixed changelog action  
-
-
