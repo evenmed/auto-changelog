@@ -9,6 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Current branch
+        run: echo $(git --no-pager branch --show-current)
+        shell: bash
+      - name: Log
+        run: echo $(git --no-pager log -100 HEAD --format="%s")
+        shell: bash
       - name: Generate Auto Changelog
         run: |
           chmod +x ./changelog.sh
