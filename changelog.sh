@@ -1,9 +1,14 @@
-# Known issues:
+# Potential issues:
 # 1. If a commit contains another commit, eg:
 #    - An old commit with msg "✨ Created github action for Changelog"
 #    - A new commit with msg "✨ Created github action"
 #    It will find the new one in the changelog and thus consider that it was
 #    added, skipping it and any prior commits
+# 
+# 2. We only check the 100 most recent commits, so if more than 100 commits are
+#    made without updating the changelog, the surplus won't get added
+#
+# 3. Not yet updating package.json / version.py
 
 
 ##################################################################################
@@ -148,7 +153,7 @@ echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
 # Push the changes into the repo
 git config user.name "evenmed"
 git config user.email "emilio@circular.co"
-git add -A
+git add dChangelog.md
 git commit -m "Version $NEW_VERSION"
 git push
 
