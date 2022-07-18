@@ -60,6 +60,7 @@ do
   # If we get to the latest one from the cl, stop the loop
   if [[ $LATEST_CL_COMMIT == "$COMMIT"* ]]
   then
+    echo "Got to latest"
     break
   fi
 
@@ -68,8 +69,10 @@ do
      ! [[ "$COMMIT" =~ $EXCLUDED_EMOJIS_PATTERN ]]
   then
     # If it does, add it to the list
+    echo "Adding"
     COMMITS_TO_ADD+=("$COMMIT")
   fi
+  echo "Fi"
 done
 
 if ! [[ ${#COMMITS_TO_ADD[@]} > 0 ]]
