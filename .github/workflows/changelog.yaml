@@ -1,0 +1,14 @@
+name: "Changelog"
+on:
+  push:
+    branches:
+      - main
+jobs:
+  update-changelog:
+    name: "Update Changelog and version"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Auto Changelog
+        run: echo "HOWDY DOWDY"
+        # with:
+        #   github_token: ${{ secrets.GITHUB_TOKEN }}
