@@ -52,7 +52,7 @@ COMMITS_TO_ADD=()
 # Get the 100 most recent commit messages and put them in an array
 COMMITS_STRING=$(git --no-pager log -100 HEAD --format="%s")
 IFS=$'\n' read -rd '' -a COMMITS <<< "$COMMITS_STRING"
-
+echo "COMMITS_STRING $COMMITS_STRING"
 # Loop over them to find all that should be added
 for COMMIT in "${COMMITS[@]}"
 do
