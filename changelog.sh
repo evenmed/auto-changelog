@@ -169,6 +169,7 @@ if [[ ${#BREAKING_CHANGES[@]} > 0 ]]
 then
   if [ -f "package.json" ]
   then
+    echo "Package.json found, using npm-version to bump the version"
     V_STRING=$(npm --no-git-tag-version version major)
   fi
   # else
@@ -217,14 +218,14 @@ done
 echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
 
 # Update version in package.json too
-VERSION_PATTERN='"version": "[[:digit:]]+.[[:digit:]]+.[[:digit:]]+"'
-if [[ "$(cat package.json)" =~ $VERSION_PATTERN ]]
-then
-  echo "Updating version in package.json"
-  PACKAGE=$(cat package.json)
-  # Replace the pattern match with `"version": "$NEW_VERSION"`
-  echo -e "${PACKAGE/${BASH_REMATCH[0]}/\"version\": \"$NEW_VERSION\"}" > package.json
-fi
+# VERSION_PATTERN='"version": "[[:digit:]]+.[[:digit:]]+.[[:digit:]]+"'
+# if [[ "$(cat package.json)" =~ $VERSION_PATTERN ]]
+# then
+#   echo "Updating version in package.json"
+#   PACKAGE=$(cat package.json)
+#   # Replace the pattern match with `"version": "$NEW_VERSION"`
+#   echo -e "${PACKAGE/${BASH_REMATCH[0]}/\"version\": \"$NEW_VERSION\"}" > package.json
+# fi
 
 # Push the changes into the repo
 git config user.name "evenmed"

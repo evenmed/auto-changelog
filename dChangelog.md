@@ -1,3 +1,6 @@
+**v6.0.0 2022-07-18 13:24**  
+🚨 A breaking change  
+
 **v5.0.0 2022-07-18 16:44**  
 🚨 Bunch of comments, done for real now  
 
