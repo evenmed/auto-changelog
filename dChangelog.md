@@ -1,3 +1,6 @@
+**v3.2.0 2022-07-18 05:41**  
+✨ Now we update package.json too  
+
 **v3.1.0 2022-07-18 05:16**  
 ✨ version ✨  
 
