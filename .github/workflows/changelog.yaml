@@ -9,6 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate Auto Changelog
-        run: echo "HOWDY DOWDY"
+        run: changelog.sh
         # with:
         #   github_token: ${{ secrets.GITHUB_TOKEN }}
