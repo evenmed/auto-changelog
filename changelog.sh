@@ -165,20 +165,16 @@ do
 done
 
 # Increment the version accordingly
+BUMP="patch"
 if [[ ${#BREAKING_CHANGES[@]} > 0 ]]
 then
-  if [ -f "package.json" ]
-  then
-    echo "Package.json found, using npm-version to bump the version"
-    V_STRING=$(npm --no-git-tag-version version major)
-    echo "Vstring $V_STRING"
-  fi
-  # else
-    V_MAJOR=$(($V_MAJOR + 1))
-    V_MINOR=0
-    V_PATCH=0
+  BUMP="major"
+  V_MAJOR=$(($V_MAJOR + 1))
+  V_MINOR=0
+  V_PATCH=0
 elif [[ ${#FEATURES[@]} > 0 ]]
 then
+  BUMP="minor"
   V_MINOR=$(($V_MINOR + 1))
   V_PATCH=0
 else
@@ -193,6 +189,13 @@ echo "NEW VERSION: $NEW_VERSION"
 ##################################################################################
 ########################## STEP 4: Update the Changelog! #########################
 ##################################################################################
+
+if [ -f "package.json" ]
+then
+  echo "Package.json found, using npm-version to bump the version"
+  V_STRING=$(npm --no-git-tag-version version $BUMP)
+  echo "Vstring $V_STRING"
+fi
 
 # We start with the new version
 STRING_TO_ADD="**v$NEW_VERSION $(date '+%Y-%m-%d %H:%M')**  \n"
