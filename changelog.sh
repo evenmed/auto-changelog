@@ -179,7 +179,7 @@ do
 done
 
 # Finally, add it all into the changelog!
-echo -e "$STRING_TO_ADD\n$(cat dChangelog.md)" > dChangelog.md
+echo -e "$STRING_TO_ADD\n$CHANGELOG_CONTENT" > dChangelog.md
 
 # Push the changes into the repo
 git config user.name "evenmed"
