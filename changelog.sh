@@ -57,7 +57,7 @@ IFS=$'\n' read -rd '' -a COMMITS <<< "$COMMITS_STRING"
 for COMMIT in "${COMMITS[@]}"
 do
   # If we get to the latest one from the cl, stop the loop
-  if [[ $LATEST_CL_COMMIT == "$COMMIT"* ]]
+  if [[ "$(cat dChangelog.md)" == *"$COMMIT"* ]]
   then
     break
   fi
