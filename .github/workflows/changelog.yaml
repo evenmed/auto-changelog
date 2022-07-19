@@ -15,6 +15,7 @@ jobs:
       - name: Update Changelog and version
         id: update-changelog
         run: |
+          echo '::echo::on'
           chmod +x ./changelog.sh
           ./changelog.sh
         shell: bash
