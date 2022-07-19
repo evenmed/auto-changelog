@@ -13,7 +13,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
       - name: Update Changelog and version
-        id: update-changelog
+        id: changelog-update
         run: |
           echo '::echo::on'
           chmod +x ./changelog.sh
@@ -21,7 +21,7 @@ jobs:
         shell: bash
       - name: Post Changelog to Slack
         shell: bash
-        # if: ${{ always() && (steps.update-changelog.status == 'updated') }}
+        # if: ${{ always() && (steps.changelog-update.status == 'updated') }}
         run: |
-          echo "STATUS ${{ steps.update-changelog.status }}"
-          echo "TEXT ${{ steps.update-changelog.text }}"
+          echo "STATUS ${{ steps.changelog-update.status }}"
+          echo "TEXT ${{ steps.changelog-update.text }}"
