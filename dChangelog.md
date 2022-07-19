@@ -1,3 +1,6 @@
+**v3.0.0 2022-07-19 23:18**  
+🚨 New step  
+
 **v2.1.1 2022-07-18 21:21**  
 🏗 Avoid reading changelog twice  
 
