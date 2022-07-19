@@ -21,7 +21,7 @@ jobs:
         shell: bash
       - name: Post Changelog to Slack
         shell: bash
-        if: ${{ always() && (steps.update-changelog.status == 'updates') }}
+        if: ${{ always() && (steps.update-changelog.status == 'updated') }}
         run: |
           echo $steps.update-changelog.status
           echo $steps.update-changelog.text
