@@ -181,8 +181,8 @@ done
 # Finally, add it all into the changelog!
 echo -e "$STRING_TO_ADD\n$CHANGELOG_CONTENT" > dChangelog.md
 
-echo "::set-output name=status::updated"
-echo "::set-output name=text::$STRING_TO_ADD"
+echo "::set-output name=status::'updated'"
+echo "::set-output name=text::'$STRING_TO_ADD'"
 
 # Push the changes into the repo
 git config user.name "evenmed"
