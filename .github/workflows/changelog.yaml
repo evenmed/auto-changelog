@@ -18,6 +18,9 @@ jobs:
           echo '::echo::on'
           chmod +x ./changelog.sh
           ./changelog.sh
+          echo "::set-output name=status::'updated1'"
+          echo ::set-output name=status::'updated2'
+          echo ::set-output name=status::updated3
         shell: bash
       - name: Post Changelog to Slack
         shell: bash
