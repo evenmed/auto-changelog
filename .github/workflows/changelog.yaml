@@ -26,5 +26,5 @@ jobs:
         shell: bash
         # if: ${{ always() && (steps.changelog-update.status == 'updated') }}
         run: |
-          echo "STATUS ${{ steps.changelog-update.status }}"
-          echo "TEXT ${{ steps.changelog-update.text }}"
+          echo "STATUS ${{ steps.changelog-update.outputs.status }}"
+          echo "TEXT ${{ steps.changelog-update.outputs.text }}"
